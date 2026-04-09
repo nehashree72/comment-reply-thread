@@ -1,0 +1,19 @@
+{
+  "name": "comment-thread-app",
+  "version": "1.0.0",
+  "description": "A full-stack threaded comment system built with the MERN Stack.",
+  "main": "index.js",
+ "scripts": {
+  "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+  "server": "cd server && npm run dev",
+  "client": "cd client && npm run dev"
+   },
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
