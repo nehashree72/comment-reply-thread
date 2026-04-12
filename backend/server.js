@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/commentsDB")
+// ✅ FIX: use MongoDB Atlas (NOT localhost)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -16,11 +17,7 @@ const CommentSchema = new mongoose.Schema({
   text: String,
   likes: { type: Number, default: 0 },
   dislikes: { type: Number, default: 0 },
-  replies: [
-    {
-      text: String
-    }
-  ]
+  replies: [{ text: String }]
 });
 
 const Comment = mongoose.model("Comment", CommentSchema);
@@ -33,9 +30,7 @@ app.get("/comments", async (req, res) => {
 
 // ADD comment
 app.post("/comments", async (req, res) => {
-  const newComment = new Comment({
-    text: req.body.text
-  });
+  const newComment = new Comment({ text: req.body.text });
   await newComment.save();
   res.json(newComment);
 });
@@ -48,7 +43,7 @@ app.post("/comments/:id/reply", async (req, res) => {
   res.json(comment);
 });
 
-// DELETE comment
+// DELETE
 app.delete("/comments/:id", async (req, res) => {
   await Comment.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted" });
@@ -70,4 +65,6 @@ app.post("/comments/:id/dislike", async (req, res) => {
   res.json(comment);
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+// ✅ FIX: Render PORT support
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
