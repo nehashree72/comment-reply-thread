@@ -10,7 +10,7 @@ app.use(express.json());
 // ✅ FIX: use MongoDB Atlas (NOT localhost)
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.log("Mongo Error:", err));
 
 // Schema
 const CommentSchema = new mongoose.Schema({
